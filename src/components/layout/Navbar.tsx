@@ -5,13 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Roboto_Condensed } from "next/font/google";
-
-const robotoCondensed = Roboto_Condensed({ subsets: ["latin"] });
 
 const navLinks = [
-  { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
+  { href: "/galleries", label: "Galleries" },
+  { href: "/faq", label: "FAQ" },
   { href: "/about", label: "About" },
 ];
 
@@ -26,7 +24,7 @@ export default function Navbar() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
     >
-      <div className={`${robotoCondensed.className} relative`}>
+      <div className="font-nav relative">
         <div className="mx-auto flex h-[var(--nav-height)] max-w-[var(--content-max)] items-center justify-between px-[var(--page-px)]">
           <Link
             href="/"

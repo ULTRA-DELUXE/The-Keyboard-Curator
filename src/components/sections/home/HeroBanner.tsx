@@ -7,7 +7,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 export default function HeroBanner() {
   return (
-    <div className="w-full bg-gray-200">
+    <section className="min-h-0 w-full flex-1 overflow-hidden bg-black">
       <Swiper
         modules={[Navigation, Pagination, Keyboard, Autoplay]}
         spaceBetween={0}
@@ -16,7 +16,7 @@ export default function HeroBanner() {
         navigation
         pagination={{ clickable: true }}
         keyboard={{ enabled: true }}
-        className="hero-swiper"
+        className="hero-swiper h-full"
         autoplay={{
           delay: 3000,
           disableOnInteraction: false,
@@ -33,6 +33,6 @@ export default function HeroBanner() {
           </SwiperSlide>
         ))}
       </Swiper>
-    </div>
+    </section>
   );
 }

@@ -11,26 +11,29 @@ import {
   StaggerChildren,
   StaggerItem,
 } from "@/components/motion/StaggerChildren";
-import { services, workbenchOath } from "@/data/services";
+import { services, serviceMarqueeItems, workbenchOath } from "@/data/services";
 import { motion } from "framer-motion";
-import ServicesMarquee from "./ServicesMarquee";
+import LoopBanner from "@/components/sections/home/LoopBanner";
 import ServicesProcess from "./ServicesProcess";
 
 export default function ServicesContent() {
   return (
-    <GridContainer>
-      <StaggerChildren className="contents">
-        <StaggerItem className="contents">
-          <FourGridCard
-            title="Services for the Clacky."
-            subtitle="We speak thock fluently."
-          />
-        </StaggerItem>
-      </StaggerChildren>
+    <>
+      <GridContainer className="pb-0">
+        <StaggerChildren className="contents">
+          <StaggerItem className="contents">
+            <FourGridCard
+              title="Services for the Clacky."
+              subtitle="We speak thock fluently."
+            />
+          </StaggerItem>
+        </StaggerChildren>
+      </GridContainer>
 
-      <ServicesMarquee />
+      <LoopBanner text={serviceMarqueeItems.join("  ·  ")} />
 
-      <StaggerChildren className="contents">
+      <GridContainer className="pt-0">
+        <StaggerChildren className="contents">
         {services.map((service) => (
           <StaggerItem key={service.id} className="contents">
             <ServiceCard
@@ -110,5 +113,6 @@ export default function ServicesContent() {
         </StaggerItem>
       </StaggerChildren>
     </GridContainer>
+    </>
   );
 }

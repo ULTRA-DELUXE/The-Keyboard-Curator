@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, Roboto_Condensed } from "next/font/google";
+import { Bebas_Neue, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
 const bebasNeue = Bebas_Neue({
@@ -8,9 +8,10 @@ const bebasNeue = Bebas_Neue({
   variable: "--font-bebas-neue",
 });
 
-const robotoCondensed = Roboto_Condensed({
+const playfair = Playfair_Display({
   subsets: ["latin"],
-  variable: "--font-roboto-condensed",
+  style: ["normal", "italic"],
+  variable: "--font-playfair",
 });
 
 export const metadata: Metadata = {
@@ -28,7 +29,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bebasNeue.variable} ${robotoCondensed.variable} h-full antialiased`}
+      className={`${bebasNeue.variable} ${playfair.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body

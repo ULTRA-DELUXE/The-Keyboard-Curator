@@ -8,6 +8,7 @@ interface LargeCardProps {
   className?: string;
   gradient?: string;
   imageSrc?: string;
+  imageAlt?: string;
 }
 
 export default function LargeCard({
@@ -15,6 +16,7 @@ export default function LargeCard({
   className,
   gradient,
   imageSrc,
+  imageAlt,
 }: LargeCardProps) {
   const [hovered, setHovered] = useState(false);
 
@@ -30,7 +32,7 @@ export default function LargeCard({
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={imageSrc}
-          alt={content ?? "Keyboard showcase"}
+          alt={imageAlt ?? content ?? "Keyboard showcase"}
           className="absolute inset-0 z-0 h-full w-full object-cover"
         />
       )}

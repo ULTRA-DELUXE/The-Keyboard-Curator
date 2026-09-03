@@ -62,7 +62,8 @@
   --color-de-gold: #ffcc00;
   --color-de-blue: #0000ff;
   --font-bebas: var(--font-bebas-neue), Arial, Helvetica, sans-serif;
-  --font-nav: var(--font-roboto-condensed), Arial, Helvetica, sans-serif;
+  --font-nav: var(--font-playfair), "Playfair Display", Georgia, serif;
+  --font-serif: var(--font-playfair), "Playfair Display", Georgia, serif;
 }
 
 body {
@@ -103,12 +104,14 @@ body {
 }
 
 .type-body {
+  font-family: var(--font-serif);
   font-size: clamp(1.125rem, 1.6vw, 1.3125rem);
   line-height: 1.55;
   letter-spacing: 0.012em;
 }
 
 .type-body-lg {
+  font-family: var(--font-serif);
   font-size: clamp(1.3125rem, 1.9vw, 1.625rem);
   line-height: 1.5;
   letter-spacing: 0.01em;
@@ -182,9 +185,22 @@ body {
   );
 }
 
+.section-divider.is-light {
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    #fff 38.2%,
+    #fff 100%
+  );
+}
+
 .side-rule {
   width: 2px;
   background: linear-gradient(to bottom, #000 0%, #000 61.8%, transparent 100%);
+}
+
+.side-rule.is-light {
+  background: linear-gradient(to bottom, #fff 0%, #fff 61.8%, transparent 100%);
 }
 
 .card-surface {
@@ -232,21 +248,6 @@ body {
   width: 100%;
 }
 
-@keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-.animate-scroll {
-  display: flex;
-  width: calc(100% * 4);
-  animation: scroll 36s linear infinite;
-}
-
 .custom-swiper .swiper-pagination {
   position: relative;
   margin-top: var(--space-4);
@@ -285,6 +286,40 @@ body {
   right: var(--space-2);
 }
 
+.hero-swiper {
+  height: 100%;
+}
+
+.hero-swiper .swiper-slide {
+  height: 100%;
+}
+
+.hero-swiper .swiper-pagination {
+  position: absolute;
+  bottom: var(--space-3);
+  left: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.hero-swiper .swiper-pagination-bullet {
+  background-color: transparent;
+  border: 2px solid #fff;
+  opacity: 1;
+  width: 10px;
+  height: 10px;
+}
+
+.hero-swiper .swiper-pagination-bullet-active {
+  background-color: #fff;
+  border: 2px solid #fff;
+}
+
+.hero-swiper .swiper-button-prev,
+.hero-swiper .swiper-button-next {
+  color: #fff;
+}
+
 @media (max-width: 767px) {
   .custom-swiper .swiper-button-prev,
   .custom-swiper .swiper-button-next {
@@ -298,5 +333,9 @@ body {
 
   .section-divider {
     background: linear-gradient(to right, #000 0%, #000 61.8%, transparent 100%);
+  }
+
+  .section-divider.is-light {
+    background: linear-gradient(to right, #fff 0%, #fff 61.8%, transparent 100%);
   }
 }
