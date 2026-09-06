@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
-import { Bebas_Neue, Roboto_Condensed } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Bebas_Neue, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
 const bebasNeue = Bebas_Neue({
@@ -8,9 +8,10 @@ const bebasNeue = Bebas_Neue({
   variable: "--font-bebas-neue",
 });
 
-const robotoCondensed = Roboto_Condensed({
+const playfair = Playfair_Display({
   subsets: ["latin"],
-  variable: "--font-roboto-condensed",
+  style: ["normal", "italic"],
+  variable: "--font-playfair",
 });
 
 export const metadata: Metadata = {
@@ -18,6 +19,10 @@ export const metadata: Metadata = {
   description:
     "Custom mechanical keyboards curated with care — builds, mods, and premium keycaps.",
   openGraph: { images: ["/og-image.png"] },
+};
+
+export const viewport: Viewport = {
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -28,7 +33,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bebasNeue.variable} ${robotoCondensed.variable} h-full antialiased`}
+      className={`${bebasNeue.variable} ${playfair.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body

@@ -1,27 +1,30 @@
-"use client";
-
-import { motion } from "framer-motion";
+import Image from "next/image";
 
 interface HeroBannerCardProps {
   title: string;
   content: string;
   imageUrl: string;
+  priority?: boolean;
 }
 
 export default function HeroBannerCard({
   title,
   content,
   imageUrl,
+  priority = false,
 }: HeroBannerCardProps) {
+  const label = `${title}: ${content}`;
+
   return (
-    <motion.div
-      className="flex h-[80vh] w-full items-center justify-center bg-gray-400 bg-cover bg-center"
-      style={{ backgroundImage: `url(${imageUrl})` }}
-      initial={{ scale: 1.05, opacity: 0.8 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 1, ease: "easeOut" }}
-      aria-label={`${title}: ${content}`}
-      role="img"
-    />
+    <div className="relative h-full w-full bg-black">
+      <Image
+        src={imageUrl}
+        alt={label}
+        fill
+        priority={priority}
+        sizes="100vw"
+        className="object-cover"
+      />
+    </div>
   );
 }

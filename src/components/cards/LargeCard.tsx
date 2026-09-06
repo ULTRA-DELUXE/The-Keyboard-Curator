@@ -1,28 +1,36 @@
 "use client";
 
+import { highlightFor } from "@/data/highlights";
+import { WashCopy, WashFill, useScrollWash } from "@/components/motion/ScrollWash";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import type { Ref } from "react";
 
 interface LargeCardProps {
   content?: string;
   className?: string;
-  gradient?: string;
+  highlight?: string;
   imageSrc?: string;
+  imageAlt?: string;
 }
 
 export default function LargeCard({
   content,
   className,
-  gradient,
+  highlight,
   imageSrc,
+  imageAlt,
 }: LargeCardProps) {
-  const [hovered, setHovered] = useState(false);
+  const { ref, amount, hoverBind } = useScrollWash();
+  const wash = highlight ?? highlightFor(content ?? imageAlt ?? imageSrc ?? "card");
 
   return (
     <motion.div
-      className={`card-surface span-half row-tall relative flex flex-col items-center justify-center overflow-hidden p-[var(--space-4)] sm:p-[var(--space-5)] ${className ?? ""}`}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      ref={ref as Ref<HTMLDivElement>}
+      className={`card-surface span-half row-tall relative flex min-h-[16rem] flex-col items-center justify-center p-[var(--space-4)] sm:p-[var(--space-5)] md:min-h-[var(--card-height-4col)] ${
+        imageSrc ? "overflow-hidden" : "overflow-visible"
+      } ${className ?? ""}`}
+      onMouseEnter={hoverBind.onMouseEnter}
+      onMouseLeave={hoverBind.onMouseLeave}
       whileHover={{ scale: 1.004, y: -2 }}
       transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
     >
@@ -30,28 +38,24 @@ export default function LargeCard({
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={imageSrc}
-          alt={content ?? "Keyboard showcase"}
+          alt={imageAlt ?? content ?? "Keyboard showcase"}
           className="absolute inset-0 z-0 h-full w-full object-cover"
         />
       )}
 
-      <div
-        className={`absolute inset-0 transition-all duration-300 ease-in-out ${hovered ? gradient : ""}`}
-        style={{
-          backgroundSize: "200% 100%",
-          backgroundPosition: hovered ? "100% 0" : "0 0",
-          zIndex: 1,
-        }}
+      <WashFill
+        amount={amount}
+        className={wash}
+        maxOpacity={imageSrc ? 0.8 : 1}
       />
 
       {content && (
-        <p
-          className={`reading-measure type-body-lg relative z-10 ml-auto text-balance text-right transition-colors duration-300 ${
-            hovered ? "text-white" : "text-black"
-          }`}
+        <WashCopy
+          amount={amount}
+          className="reading-measure type-body-lg relative z-10 ml-auto text-balance text-right"
         >
           {content}
-        </p>
+        </WashCopy>
       )}
     </motion.div>
   );

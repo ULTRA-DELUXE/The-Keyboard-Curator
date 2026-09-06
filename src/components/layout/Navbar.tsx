@@ -5,28 +5,28 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Roboto_Condensed } from "next/font/google";
+import type { ChromeLink } from "@/types/content";
 
-const robotoCondensed = Roboto_Condensed({ subsets: ["latin"] });
-
-const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/services", label: "Services" },
-  { href: "/about", label: "About" },
-];
-
-export default function Navbar() {
+export default function Navbar({
+  name,
+  shortName,
+  links,
+}: {
+  name: string;
+  shortName: string;
+  links: ChromeLink[];
+}) {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
 
   return (
     <motion.nav
-      className="fixed top-0 left-0 z-50 w-full border-b-2 border-black bg-white/95 shadow-sm backdrop-blur-md"
+      className="fixed top-0 left-0 z-50 w-full border-b-2 border-black bg-white/95 pt-[env(safe-area-inset-top,0px)] shadow-sm backdrop-blur-md"
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
     >
-      <div className={`${robotoCondensed.className} relative`}>
+      <div className="font-nav relative">
         <div className="mx-auto flex h-[var(--nav-height)] max-w-[var(--content-max)] items-center justify-between px-[var(--page-px)]">
           <Link
             href="/"
@@ -34,22 +34,21 @@ export default function Navbar() {
             onClick={() => setMenuOpen(false)}
           >
             <Image
-              src="/images/thekblogo.png"
-              alt="Logo"
-              width={40}
-              height={40}
-              className="inline-block shrink-0"
+              src="/images/TKC-logo-lines.svg"
+              alt={name}
+              width={340}
+              height={550}
+              unoptimized
+              className="inline-block h-[2.625rem] w-auto shrink-0 sm:h-[3rem]"
             />
             <span className="type-subhead truncate font-semibold tracking-[0.02em] text-black">
-              <span className="sm:hidden">TKC & Co.</span>
-              <span className="hidden sm:inline">
-                The Keyboard Curator & Co.
-              </span>
+              <span className="sm:hidden">{shortName}</span>
+              <span className="hidden sm:inline">{name}</span>
             </span>
           </Link>
 
           <div className="hidden items-center gap-[var(--space-4)] lg:flex">
-            {navLinks.map((link) => (
+            {links.map((link) => (
               <Link key={link.href} href={link.href} className="nav-link">
                 {link.label}
               </Link>
@@ -87,11 +86,11 @@ export default function Navbar() {
               transition={{ duration: 0.25, ease: "easeOut" }}
             >
               <div className="flex flex-col px-[var(--page-px)] py-[var(--space-3)]">
-                {navLinks.map((link) => (
+                {links.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`nav-link border-b border-black/10 py-[var(--space-3)] last:border-b-0 ${
+                    className={`nav-link border-b-2 border-black py-[var(--space-3)] last:border-b-0 ${
                       pathname === link.href ? "text-de-blue" : ""
                     }`}
                     onClick={() => setMenuOpen(false)}

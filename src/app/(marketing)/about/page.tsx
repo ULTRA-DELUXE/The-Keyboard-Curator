@@ -1,20 +1,19 @@
 import type { Metadata } from "next";
-import FooterCard from "@/components/layout/FooterCard";
+import { notFound } from "next/navigation";
 import AboutContent from "@/components/sections/about/AboutContent";
+import { getAboutPage, pageMetadata } from "@/lib/content";
 
-export const metadata: Metadata = {
-  title: "The Keyboard Curator | About",
-  description:
-    "Meet the keyboard enthusiasts behind The Keyboard Curator & Co.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata("about");
+}
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const { page } = await getAboutPage();
+  if (!page) notFound();
+
   return (
-    <div className="flex min-h-screen flex-col">
-      <main className="flex-grow">
-        <AboutContent />
-      </main>
-      <FooterCard />
-    </div>
+    <main>
+      <AboutContent copy={page.copy} />
+    </main>
   );
 }
