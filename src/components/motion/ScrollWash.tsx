@@ -25,9 +25,9 @@ export function useScrollWash(): {
 } {
   const ref = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
-  const hovered = useMotionValue(0);
-  const scrollEnabled = useMotionValue(0);
-  const reducedFlag = useMotionValue(0);
+  const hovered = useMotionValue<number>(0);
+  const scrollEnabled = useMotionValue<number>(0);
+  const reducedFlag = useMotionValue<number>(0);
 
   useEffect(() => {
     const mobile = window.matchMedia("(max-width: 767px)");
@@ -52,7 +52,7 @@ export function useScrollWash(): {
     [0, 0.38, 1, 0.38, 0],
   );
 
-  const steppedWash = useTransform(scrollYProgress, (progress) =>
+  const steppedWash = useTransform(scrollYProgress, (progress): number =>
     progress > 0.14 && progress < 0.86 ? 1 : 0,
   );
 
