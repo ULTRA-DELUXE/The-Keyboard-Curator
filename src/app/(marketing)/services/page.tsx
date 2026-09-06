@@ -1,16 +1,23 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import ServicesContent from "@/components/sections/services/ServicesContent";
+import { getServicesPage, pageMetadata } from "@/lib/content";
 
-export const metadata: Metadata = {
-  title: "The Keyboard Curator | Services",
-  description:
-    "Professional keyboard assembly, switch lubing, stabilizer tuning, tape mods, QMK flashing, and group buy concierge for enthusiasts.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata("services");
+}
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const { page, services, processSteps } = await getServicesPage();
+  if (!page) notFound();
+
   return (
     <main>
-      <ServicesContent />
+      <ServicesContent
+        copy={page.copy}
+        services={services}
+        processSteps={processSteps}
+      />
     </main>
   );
 }

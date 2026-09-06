@@ -9,7 +9,7 @@ import {
   useTransform,
 } from "framer-motion";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import MondrianStrip from "@/components/layout/MondrianStrip";
 
 const LOAD_DURATION_S = 5;
@@ -17,15 +17,66 @@ const CONTENT_FADE_S = 0.45;
 const CURTAIN_DELAY_S = 0.5;
 const CURTAIN_SLIDE_S = 0.85;
 const EASE = [0.25, 0.1, 0.25, 1] as const;
+const SPLASH_SEEN_KEY = "tkc-splash-seen";
+const SPLASH_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+const SKIP_SPLASH_TIMER = true;
+
+function markSplashSeen() {
+  try {
+    window.localStorage.setItem(
+      SPLASH_SEEN_KEY,
+      String(Date.now() + SPLASH_TTL_MS),
+    );
+  } catch {
+    // Private mode or blocked storage — splash may replay.
+  }
+}
+
+function hasSeenSplash() {
+  try {
+    const raw = window.localStorage.getItem(SPLASH_SEEN_KEY);
+    if (!raw) {
+      return false;
+    }
+
+    const expiresAt = Number(raw);
+    if (!Number.isFinite(expiresAt)) {
+      markSplashSeen();
+      return true;
+    }
+
+    return Date.now() < expiresAt;
+  } catch {
+    return false;
+  }
+}
 
 export default function LoadingSplash() {
-  const [loading, setLoading] = useState(true);
+  const [enabled, setEnabled] = useState(false);
+  const [loading, setLoading] = useState(false);
   const reduceMotion = useReducedMotion();
   const progress = useMotionValue(0);
   const scaleX = useTransform(progress, [0, 100], [0, 1]);
   const percentLabel = useTransform(progress, (value) => `${Math.round(value)}%`);
 
+  useLayoutEffect(() => {
+    if (!SKIP_SPLASH_TIMER && hasSeenSplash()) {
+      return;
+    }
+
+    if (!SKIP_SPLASH_TIMER) {
+      markSplashSeen();
+    }
+
+    setEnabled(true);
+    setLoading(true);
+  }, []);
+
   useEffect(() => {
+    if (!enabled) {
+      return;
+    }
+
     if (reduceMotion) {
       progress.set(100);
       const timer = window.setTimeout(() => setLoading(false), 400);
@@ -40,7 +91,7 @@ export default function LoadingSplash() {
     controls.then(() => setLoading(false));
 
     return () => controls.stop();
-  }, [progress, reduceMotion]);
+  }, [enabled, progress, reduceMotion]);
 
   return (
     <AnimatePresence>
@@ -79,11 +130,12 @@ export default function LoadingSplash() {
               transition={{ duration: 0.55, ease: EASE }}
             >
               <Image
-                src="/images/thekb.gif"
+                src="/images/TKC-loading.gif"
                 alt="Loading"
-                width={200}
-                height={200}
+                width={340}
+                height={550}
                 priority
+                unoptimized
                 className="h-auto w-[clamp(5.5625rem,42vw,12.5rem)] max-h-[28svh] object-contain"
               />
 

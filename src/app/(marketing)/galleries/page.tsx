@@ -1,16 +1,19 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import GalleryContent from "@/components/sections/gallery/GalleryContent";
+import { getGalleryPage, pageMetadata } from "@/lib/content";
 
-export const metadata: Metadata = {
-  title: "The Keyboard Curator | Galleries",
-  description:
-    "A gallery of mechanical keyboards we curate, assemble, and ship — the same boards from our daily selections.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata("galleries");
+}
 
-export default function GalleriesPage() {
+export default async function GalleriesPage() {
+  const { page, rows } = await getGalleryPage();
+  if (!page) notFound();
+
   return (
     <main>
-      <GalleryContent />
+      <GalleryContent copy={page.copy} rows={rows} />
     </main>
   );
 }

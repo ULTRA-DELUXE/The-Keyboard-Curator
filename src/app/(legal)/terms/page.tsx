@@ -1,17 +1,24 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import LegalDocument from "@/components/sections/legal/LegalDocument";
-import { termsAndConditions } from "@/data/legal";
+import { getLegal, legalMetadata } from "@/lib/content";
 
-export const metadata: Metadata = {
-  title: "The Keyboard Curator | Terms and Conditions",
-  description:
-    "Terms and conditions for using The Keyboard Curator & Co. website.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return legalMetadata("terms");
+}
 
-export default function TermsPage() {
+export default async function TermsPage() {
+  const document = await getLegal("terms");
+  if (!document) notFound();
+
   return (
     <main>
-      <LegalDocument {...termsAndConditions} />
+      <LegalDocument
+        title={document.title}
+        lastUpdated={document.lastUpdated}
+        intro={document.intro}
+        sections={document.sections}
+      />
     </main>
   );
 }

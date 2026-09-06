@@ -2,6 +2,7 @@
 
 import FourGridCard from "@/components/cards/FourGridCard";
 import LargeCard from "@/components/cards/LargeCard";
+import SplitGridCard from "@/components/cards/SplitGridCard";
 import TwoGridCard from "@/components/cards/TwoGridCard";
 import GridContainer from "@/components/containers/GridContainer";
 import SideHeading from "@/components/layout/SideHeading";
@@ -10,69 +11,68 @@ import {
   StaggerChildren,
   StaggerItem,
 } from "@/components/motion/StaggerChildren";
-import { aboutCasesImage, aboutMarqueeItems, aboutOath } from "@/data/about";
+import { highlightAt } from "@/data/highlights";
+import type { AboutPageCopy } from "@/types/content";
 import { motion } from "framer-motion";
 import LoopBanner from "@/components/sections/home/LoopBanner";
 
-export default function AboutContent() {
+export default function AboutContent({ copy }: { copy: AboutPageCopy }) {
   return (
     <>
       <GridContainer className="pb-0">
         <StaggerChildren className="contents">
           <StaggerItem className="contents">
-            <FourGridCard
-              title="About the Curator."
-              subtitle="A workbench, not a factory."
-            />
+            <FourGridCard title={copy.heroTitle} subtitle={copy.heroSubtitle} />
           </StaggerItem>
         </StaggerChildren>
       </GridContainer>
 
-      <LoopBanner text={aboutMarqueeItems.join("  ·  ")} />
+      <LoopBanner text={copy.marquee.join("  ·  ")} />
 
       <GridContainer className="pt-0">
         <StaggerChildren className="contents">
         <StaggerItem className="contents">
           <TwoGridCard
             size="headline"
-            content="What we do here as a family of nerds."
-            gradient="bg-gradient-to-l from-de-gold to-transparent"
+            content={copy.familyTitle}
+            highlight={highlightAt(0)}
           />
         </StaggerItem>
         <StaggerItem className="contents">
           <TwoGridCard
             size="body"
-            content="In a cozy basement, three keyboard enthusiasts turned an obsession into a workbench. Energy drinks, spare stems, and a lot of thock later — The Keyboard Curator & Co. was a shop instead of a joke."
-            gradient="bg-gradient-to-l from-de-gold to-transparent"
+            content={copy.familyBody}
+            highlight={highlightAt(1)}
           />
         </StaggerItem>
 
         <StaggerItem className="contents">
           <LargeCard
-            imageSrc="https://mechaland.id/cdn/shop/files/2066030799upload_1800x1350.jpg?v=1714569416"
-            gradient="bg-gradient-to-l from-de-blue to-transparent"
+            imageSrc={copy.familyImage}
+            imageAlt="Keyboard workbench"
+            highlight={highlightAt(2)}
             className="min-h-[var(--card-height-4col)]"
           />
         </StaggerItem>
         <StaggerItem className="contents">
           <LargeCard
-            content="Family is the secret ingredient. Kids orbit the office, cats claim the desk mats, and snack breaks turn into switch debates. We design and build with that same care — a tight-knit bench where every clack is supposed to feel like it belongs to someone."
-            gradient="bg-gradient-to-l from-de-red to-transparent"
+            content={copy.familyCard}
+            highlight={highlightAt(3)}
             className="min-h-[var(--card-height-4col)]"
           />
         </StaggerItem>
         <StaggerItem className="contents">
           <LargeCard
-            imageSrc={aboutCasesImage}
+            imageSrc={copy.casesImage}
             imageAlt="Five anodized keyboard cases in silver, blue, purple, orange, and black"
-            gradient="bg-gradient-to-l from-de-gold to-transparent"
+            highlight={highlightAt(4)}
             className="min-h-[var(--card-height-4col)]"
           />
         </StaggerItem>
         <StaggerItem className="contents">
           <LargeCard
-            content={aboutOath}
-            gradient="bg-gradient-to-r from-de-red via-de-gold to-de-blue"
+            content={copy.oath}
+            highlight={highlightAt(5)}
             className="min-h-[var(--card-height-4col)]"
           />
         </StaggerItem>
@@ -80,10 +80,10 @@ export default function AboutContent() {
 
       <div className="span-full grid grid-cols-1 items-stretch gap-[var(--grid-gap)] pt-[var(--space-4)] lg:grid-cols-4 lg:items-center">
         <FadeIn
-          className="flex items-center justify-end lg:col-span-2 lg:pr-[var(--space-4)]"
+          className="flex items-center justify-end lg:col-span-2"
           direction="right"
         >
-          <SideHeading text="By nerds, for nerds." />
+          <SideHeading text={copy.pledgeHeading} />
         </FadeIn>
 
         <motion.div
@@ -96,42 +96,22 @@ export default function AboutContent() {
           <TwoGridCard
             layout="block"
             size="body"
-            content="We only curate what we would type on. If it is on this site, someone on this bench has lubed it, hated a stab on it, or shipped it across an ocean."
-            gradient="bg-gradient-to-l from-de-gold to-transparent"
-            className="min-h-[var(--panel-height)]"
+            content={copy.pledgeBody}
+            className="md:min-h-[var(--panel-height)]"
           />
         </motion.div>
       </div>
 
       <StaggerChildren className="contents">
-        <StaggerItem className="contents">
-          <TwoGridCard
-            size="headline"
-            content="Competitive yet pocket-friendly."
-            gradient="bg-gradient-to-l from-de-blue to-transparent"
-          />
-        </StaggerItem>
-        <StaggerItem className="contents">
-          <TwoGridCard
-            size="body"
-            content="Enthusiasts should not pay a museum tax. We price the work we actually do — lube, build, tune — not a lifestyle markup."
-            gradient="bg-gradient-to-l from-de-blue to-transparent"
-          />
-        </StaggerItem>
-        <StaggerItem className="contents">
-          <TwoGridCard
-            size="headline"
-            content="We deliver to literally anywhere."
-            gradient="bg-gradient-to-l from-de-red to-transparent"
-          />
-        </StaggerItem>
-        <StaggerItem className="contents">
-          <TwoGridCard
-            size="body"
-            content="Worldwide shipping is not a slogan. From this basement to your desk — bubble-wrapped, insured, and sound-tested."
-            gradient="bg-gradient-to-l from-de-red to-transparent"
-          />
-        </StaggerItem>
+        {copy.closers.map((item, index) => (
+          <StaggerItem key={item.title} className="contents">
+            <SplitGridCard
+              title={item.title}
+              description={item.description}
+              highlight={highlightAt(index)}
+            />
+          </StaggerItem>
+        ))}
       </StaggerChildren>
     </GridContainer>
     </>

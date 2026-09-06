@@ -10,9 +10,6 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "res.cloudinary.com" },
-      { protocol: "https", hostname: "kbdfans.com" },
-      { protocol: "https", hostname: "omnitype.com" },
-      { protocol: "https", hostname: "mechaland.id" },
     ],
   },
 };

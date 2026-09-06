@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -12,21 +7,114 @@ datasource db {
   provider = "postgresql"
 }
 
-model Project {
-  id            String   @id @default(cuid())
-  title         String
-  slug          String   @unique
-  description   String
-  imageUrl      String
-  imagePublicId String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+model SiteSettings {
+  id            String @id @default("site")
+  name          String
+  shortName     String
+  footerTagline String
+  homeMarquee   String
 }
 
-model TeamMember {
-  id       String  @id @default(cuid())
-  name     String
-  role     String
-  photoUrl String
-  bio      String?
+model NavLink {
+  id        String @id @default(cuid())
+  href      String
+  label     String
+  group     String
+  sortOrder Int
+
+  @@unique([group, href])
+}
+
+/// slug: home | about | services | galleries | faq
+model SitePage {
+  slug            String @id
+  metaTitle       String
+  metaDescription String
+  copy            Json
+}
+
+model Service {
+  id          String @id @default(cuid())
+  title       String
+  tagline     String
+  description String
+  price       String
+  sortOrder   Int    @unique
+}
+
+model ProcessStep {
+  id          String @id @default(cuid())
+  step        Int    @unique
+  title       String
+  description String
+}
+
+model Testimonial {
+  id        String @id @default(cuid())
+  quote     String
+  name      String
+  sortOrder Int    @unique
+}
+
+model Faq {
+  id        String @id @default(cuid())
+  question  String
+  answer    String
+  sortOrder Int    @unique
+}
+
+model Product {
+  id           String           @id @default(cuid())
+  title        String
+  imageUrl     String
+  sortOrder    Int              @unique
+  galleryItems GalleryRowItem[]
+}
+
+model GalleryRow {
+  id        String           @id @default(cuid())
+  sortOrder Int
+  direction String
+  duration  Int
+  isPreview Boolean          @default(false)
+  items     GalleryRowItem[]
+}
+
+model GalleryRowItem {
+  id        String     @id @default(cuid())
+  rowId     String
+  productId String
+  sortOrder Int
+  row       GalleryRow @relation(fields: [rowId], references: [id], onDelete: Cascade)
+  product   Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([rowId, sortOrder])
+}
+
+model LegalDocument {
+  slug        String         @id
+  title       String
+  lastUpdated String
+  intro       String
+  sections    LegalSection[]
+}
+
+model LegalSection {
+  id           String        @id @default(cuid())
+  documentSlug String
+  heading      String
+  paragraphs   String[]
+  bullets      String[]      @default([])
+  sortOrder    Int
+  document     LegalDocument @relation(fields: [documentSlug], references: [slug], onDelete: Cascade)
+
+  @@unique([documentSlug, sortOrder])
+}
+
+model Banner {
+  id        String @id @default(cuid())
+  title     String
+  content   String
+  imageUrl  String
+  sortOrder Int    @unique
 }
