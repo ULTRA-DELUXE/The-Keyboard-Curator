@@ -58,13 +58,11 @@ export const galleryCloser = {
       title: "No catalog filler.",
       description:
         "We do not hang boards for the algorithm. If we would not type on it, it does not scroll by.",
-      gradient: "bg-gradient-to-l from-de-blue to-transparent",
     },
     {
       title: "Same boards. Same bench.",
       description:
         "These are the boards we assemble, lube, and ship — photographed before they leave the basement, not scraped from a lookbook.",
-      gradient: "bg-gradient-to-l from-de-red to-transparent",
     },
   ],
 };

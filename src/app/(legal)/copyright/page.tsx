@@ -1,17 +1,24 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import LegalDocument from "@/components/sections/legal/LegalDocument";
-import { copyrightNotice } from "@/data/legal";
+import { getLegal, legalMetadata } from "@/lib/content";
 
-export const metadata: Metadata = {
-  title: "The Keyboard Curator | Copyright Notice",
-  description:
-    "Copyright notice for The Keyboard Curator & Co. website, text, and original design.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return legalMetadata("copyright");
+}
 
-export default function CopyrightPage() {
+export default async function CopyrightPage() {
+  const document = await getLegal("copyright");
+  if (!document) notFound();
+
   return (
     <main>
-      <LegalDocument {...copyrightNotice} />
+      <LegalDocument
+        title={document.title}
+        lastUpdated={document.lastUpdated}
+        intro={document.intro}
+        sections={document.sections}
+      />
     </main>
   );
 }

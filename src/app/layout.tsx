@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Bebas_Neue, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
@@ -19,6 +19,10 @@ export const metadata: Metadata = {
   description:
     "Custom mechanical keyboards curated with care — builds, mods, and premium keycaps.",
   openGraph: { images: ["/og-image.png"] },
+};
+
+export const viewport: Viewport = {
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

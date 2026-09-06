@@ -1,20 +1,30 @@
+import Image from "next/image";
+
 interface HeroBannerCardProps {
   title: string;
   content: string;
   imageUrl: string;
+  priority?: boolean;
 }
 
 export default function HeroBannerCard({
   title,
   content,
   imageUrl,
+  priority = false,
 }: HeroBannerCardProps) {
+  const label = `${title}: ${content}`;
+
   return (
-    <div
-      className="h-full w-full bg-gray-400 bg-cover bg-center"
-      style={{ backgroundImage: `url(${imageUrl})` }}
-      aria-label={`${title}: ${content}`}
-      role="img"
-    />
+    <div className="relative h-full w-full bg-black">
+      <Image
+        src={imageUrl}
+        alt={label}
+        fill
+        priority={priority}
+        sizes="100vw"
+        className="object-cover"
+      />
+    </div>
   );
 }

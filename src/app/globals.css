@@ -6,8 +6,13 @@
 @import "swiper/css/effect-creative";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --vintage-black: #2b2621;
+  --vintage-white: #ede6d6;
+  --vintage-red: #b33b2e;
+  --vintage-yellow: #c48a0a;
+  --vintage-blue: #1f5c73;
+  --background: var(--vintage-white);
+  --foreground: var(--vintage-black);
   --phi: 1.618;
 
   /* Fibonacci / golden spacing scale (px → rem) */
@@ -57,21 +62,30 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-de-black: #000000;
-  --color-de-red: #ff0000;
-  --color-de-gold: #ffcc00;
-  --color-de-blue: #0000ff;
+  --color-black: var(--vintage-black);
+  --color-white: var(--vintage-white);
+  --color-de-black: var(--vintage-black);
+  --color-de-red: var(--vintage-red);
+  --color-de-gold: var(--vintage-yellow);
+  --color-de-blue: var(--vintage-blue);
+  --color-vintage-red: var(--vintage-red);
+  --color-vintage-yellow: var(--vintage-yellow);
+  --color-vintage-blue: var(--vintage-blue);
   --font-bebas: var(--font-bebas-neue), Arial, Helvetica, sans-serif;
   --font-nav: var(--font-playfair), "Playfair Display", Georgia, serif;
   --font-serif: var(--font-playfair), "Playfair Display", Georgia, serif;
 }
 
+html,
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-bebas);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+}
+
+body {
   overflow-x: hidden;
 }
 
@@ -165,12 +179,30 @@ body {
 }
 
 .row-tall {
-  min-height: var(--card-height-4col);
+  min-height: 16rem;
+}
+
+@media (min-width: 768px) {
+  .row-tall {
+    min-height: var(--card-height-4col);
+  }
 }
 
 @media (min-width: 1024px) {
   .row-tall {
     grid-row: span 2;
+  }
+}
+
+.faq-answer {
+  position: absolute;
+  inset: 0;
+}
+
+@media (max-width: 767px) {
+  .group[aria-expanded="true"] .faq-answer {
+    position: relative;
+    inset: auto;
   }
 }
 
@@ -180,8 +212,8 @@ body {
   background: linear-gradient(
     to right,
     transparent 0%,
-    #000 38.2%,
-    #000 100%
+    var(--vintage-black) 38.2%,
+    var(--vintage-black) 100%
   );
 }
 
@@ -189,23 +221,33 @@ body {
   background: linear-gradient(
     to right,
     transparent 0%,
-    #fff 38.2%,
-    #fff 100%
+    var(--vintage-white) 38.2%,
+    var(--vintage-white) 100%
   );
 }
 
 .side-rule {
   width: 2px;
-  background: linear-gradient(to bottom, #000 0%, #000 61.8%, transparent 100%);
+  background: linear-gradient(
+    to bottom,
+    var(--vintage-black) 0%,
+    var(--vintage-black) 61.8%,
+    transparent 100%
+  );
 }
 
 .side-rule.is-light {
-  background: linear-gradient(to bottom, #fff 0%, #fff 61.8%, transparent 100%);
+  background: linear-gradient(
+    to bottom,
+    var(--vintage-white) 0%,
+    var(--vintage-white) 61.8%,
+    transparent 100%
+  );
 }
 
 .card-surface {
-  border: 2px solid #000;
-  background: #fff;
+  border: 2px solid var(--vintage-black);
+  background: var(--vintage-white);
   transition:
     box-shadow 0.35s ease,
     transform 0.35s ease;
@@ -213,13 +255,13 @@ body {
 
 @media (hover: hover) {
   .card-surface:hover {
-    box-shadow: 10px 10px 0 0 rgba(0, 0, 0, 1);
+    box-shadow: 10px 10px 0 0 var(--vintage-black);
   }
 }
 
 .nav-link {
   position: relative;
-  color: black;
+  color: var(--vintage-black);
   text-decoration: none;
   padding-bottom: 2px;
   font-weight: 500;
@@ -240,7 +282,7 @@ body {
   height: 2px;
   left: 0;
   bottom: -4px;
-  background-color: black;
+  background-color: var(--vintage-black);
   transition: width 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
@@ -256,15 +298,15 @@ body {
 
 .custom-swiper .swiper-pagination-bullet {
   background-color: transparent;
-  border: 2px solid black;
+  border: 2px solid var(--vintage-black);
   opacity: 1;
   width: 10px;
   height: 10px;
 }
 
 .custom-swiper .swiper-pagination-bullet-active {
-  background-color: black;
-  border: 2px solid black;
+  background-color: var(--vintage-black);
+  border: 2px solid var(--vintage-black);
 }
 
 .custom-swiper .swiper-button-prev,
@@ -275,7 +317,7 @@ body {
   width: 15px;
   height: 15px;
   z-index: 10;
-  color: black;
+  color: var(--vintage-black);
 }
 
 .custom-swiper .swiper-button-prev {
@@ -286,10 +328,23 @@ body {
   right: var(--space-2);
 }
 
+.hero-screen {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--nav-height) - env(safe-area-inset-top, 0px));
+  height: calc(100svh - var(--nav-height) - env(safe-area-inset-top, 0px));
+  height: calc(100dvh - var(--nav-height) - env(safe-area-inset-top, 0px));
+  min-height: 28rem;
+}
+
 .hero-swiper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
   height: 100%;
 }
 
+.hero-swiper .swiper-wrapper,
 .hero-swiper .swiper-slide {
   height: 100%;
 }
@@ -304,20 +359,20 @@ body {
 
 .hero-swiper .swiper-pagination-bullet {
   background-color: transparent;
-  border: 2px solid #fff;
+  border: 2px solid var(--vintage-white);
   opacity: 1;
   width: 10px;
   height: 10px;
 }
 
 .hero-swiper .swiper-pagination-bullet-active {
-  background-color: #fff;
-  border: 2px solid #fff;
+  background-color: var(--vintage-white);
+  border: 2px solid var(--vintage-white);
 }
 
 .hero-swiper .swiper-button-prev,
 .hero-swiper .swiper-button-next {
-  color: #fff;
+  color: var(--vintage-white);
 }
 
 @media (max-width: 767px) {
@@ -332,10 +387,20 @@ body {
   }
 
   .section-divider {
-    background: linear-gradient(to right, #000 0%, #000 61.8%, transparent 100%);
+    background: linear-gradient(
+      to right,
+      var(--vintage-black) 0%,
+      var(--vintage-black) 61.8%,
+      transparent 100%
+    );
   }
 
   .section-divider.is-light {
-    background: linear-gradient(to right, #fff 0%, #fff 61.8%, transparent 100%);
+    background: linear-gradient(
+      to right,
+      var(--vintage-white) 0%,
+      var(--vintage-white) 61.8%,
+      transparent 100%
+    );
   }
 }

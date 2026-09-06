@@ -1,17 +1,24 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import LegalDocument from "@/components/sections/legal/LegalDocument";
-import { privacyPolicy } from "@/data/legal";
+import { getLegal, legalMetadata } from "@/lib/content";
 
-export const metadata: Metadata = {
-  title: "The Keyboard Curator | Privacy Policy",
-  description:
-    "How The Keyboard Curator & Co. handles information when you use this website.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return legalMetadata("privacy");
+}
 
-export default function PrivacyPage() {
+export default async function PrivacyPage() {
+  const document = await getLegal("privacy");
+  if (!document) notFound();
+
   return (
     <main>
-      <LegalDocument {...privacyPolicy} />
+      <LegalDocument
+        title={document.title}
+        lastUpdated={document.lastUpdated}
+        intro={document.intro}
+        sections={document.sections}
+      />
     </main>
   );
 }
